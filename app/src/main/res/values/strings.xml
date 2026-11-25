@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Nexora AI</string>
+    <string name="brand_title">NEXORA AI</string>
+    <string name="brand_tagline">Your Intelligent Digital Companion</string>
+    <string name="accessibility_service_label">Nexora AI App Control</string>
+    <string name="accessibility_service_description">Allows Nexora AI to read visible screen elements and perform user-approved navigation, scrolling, tapping, and text assistance across permitted apps.</string>
+    <string name="floating_notification_channel">Nexora AI Assistant</string>
+    <string name="floating_notification_title">NEXORA AI Active</string>
+    <string name="floating_notification_text">Floating AI companion is ready. Tap to open dashboard.</string>
+    <string name="capture_notification_title">NEXORA Screen Vision</string>
+    <string name="capture_notification_text">On-demand screen analysis permission is active.</string>
+    <string name="nav_home">AI Hub</string>
+    <string name="nav_control">Control</string>
+    <string name="nav_trading">Trading</string>
+    <string name="nav_gaming">Gaming</string>
+    <string name="nav_settings">Settings</string>
+    <string name="trading_risk_disclaimer">ঝুঁকি সতর্কতা: AI কখনো লাভের নিশ্চয়তা দেয় না। সকল ট্রেডিং বিশ্লেষণ শুধুমাত্র শিক্ষামূলক ও সহায়ক তথ্যের জন্য। লাইভ ট্রেড করার আগে নিজে যাচাই ও অনুমোদন করুন।</string>
+    <string name="gaming_fairplay_notice">Fair-Play Coach Only: NEXORA AI কৌশলগত পরামর্শ ও ভয়েস কোচিং দেয় — কোনো Cheat, Aimbot বা Anti-Cheat Bypass সমর্থন করে না।</string>
+</resources>

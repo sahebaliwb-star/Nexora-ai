@@ -1,0 +1,76 @@
+name: Build NEXORA AI APK (Cloud Build)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-apk:
+    name: Build Debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout NEXORA AI Source
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Android SDK Licenses
+        run: yes | sdkmanager --licenses > /dev/null 2>&1 || true
+
+      - name: Set up Gradle 9.3.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 9.3.1
+
+      - name: Prepare Debug Keystore
+        run: |
+          if [ -f debug.keystore.base64 ]; then
+            base64 -d debug.keystore.base64 > debug.keystore
+            echo "Restored project debug.keystore from debug.keystore.base64"
+          elif [ ! -f debug.keystore ]; then
+            keytool -genkeypair -v -keystore debug.keystore \
+              -storepass android -alias androiddebugkey -keypass android \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+            echo "Generated fallback debug.keystore for CI"
+          fi
+
+      - name: Build NEXORA AI Debug APK
+        run: gradle :app:assembleDebug --no-daemon --stacktrace
+
+      - name: Rename APK for Easy Download
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/debug/app-debug.apk dist/NEXORA-AI-Debug.apk
+          ls -lh dist/NEXORA-AI-Debug.apk
+
+      - name: Upload NEXORA AI APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NEXORA-AI-Debug-APK
+          path: dist/NEXORA-AI-Debug.apk
+          retention-days: 30
+
+      - name: Publish Direct APK Download Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: NEXORA AI Build #${{ github.run_number }}
+          body: |
+            **NEXORA AI — Your Intelligent Digital Companion**
+            
+            Android ফোন থেকে সরাসরি নিচের `NEXORA-AI-Debug.apk` ফাইলটি ডাউনলোড করে ইনস্টল করুন।
+          files: dist/NEXORA-AI-Debug.apk
+          prerelease: true
